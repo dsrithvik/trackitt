@@ -3,6 +3,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useUser, UserButton } from '@clerk/nextjs';
+import Link from 'next/link';
 
 function Header() {
   const { user, isSignedIn } = useUser();
@@ -15,21 +16,25 @@ function Header() {
       </div>
 
       {/* Auth Buttons */}
-      <div className="flex items-center gap-4">
-        {isSignedIn ? (
-          <>
-            {/* User Info */}
-            <span className="text-sm">Welcome, {user?.firstName}</span>
-            {/* User Profile Button */}
-            <UserButton />
-          </>
-        ) : (
-          <>
-            <Button onClick={() => window.location.href = '/sign-up'}>Sign Up</Button>
-            <Button onClick={() => window.location.href = '/sign-in'}>Sign In</Button>
-          </>
-        )}
-      </div>
+      {isSignedIn ? (
+        <div className="flex items-center gap-4">
+          {/* Welcome Message */}
+          <span className="text-sm">Welcome, {user?.firstName}</span>
+          {/* User Profile Button */}
+          <UserButton />
+        </div>
+      ) : (
+        <div className="flex gap-3 items-center">
+          <Link href="/dashboard">
+            <Button variant="outline" className="rounded-full">
+              Dashboard
+            </Button>
+          </Link>
+          <Link href="/sign-in">
+            <Button className="rounded-full">Get Started</Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
